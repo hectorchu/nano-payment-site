@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {Button, Modal} from 'react-bootstrap';
 import QRCode from 'qrcode.react';
 import Big from 'big.js';
 
-export default function NanoPayment({
-  account, amount, show, onClose,
-}) {
+export default function NanoPayment({account, amount, show, onClose}) {
   return (
     <Modal centered show={show} onHide={onClose}>
       <Modal.Header closeButton>

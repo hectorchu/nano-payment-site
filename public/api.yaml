@@ -1,0 +1,129 @@
+swagger: "2.0"
+info:
+  description: "This is the API for the Gonano Payments service."
+  version: "0.1.0"
+  title: "Gonano Payments"
+host: "gonano.dev"
+basePath: "/payment"
+tags:
+- name: "payment"
+  description: "Payment operations"
+schemes:
+- "https"
+paths:
+  /new:
+    post:
+      tags:
+      - "payment"
+      summary: "Create a new payment request"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/NewPayment"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/NewPaymentResponse"
+        "400":
+          description: "Invalid input"
+        "500":
+          description: "Internal server error"
+  /wait:
+    post:
+      tags:
+      - "payment"
+      summary: "Wait for a payment to be fulfilled"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/WaitPayment"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/StatusResponse"
+        "400":
+          description: "Invalid input"
+        "500":
+          description: "Internal server error"
+  /status:
+    post:
+      tags:
+      - "payment"
+      summary: "Get the status of a payment"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/StatusPayment"
+      responses:
+        "200":
+          description: "Successful operation"
+          schema:
+            $ref: "#/definitions/StatusResponse"
+        "400":
+          description: "Invalid input"
+        "500":
+          description: "Internal server error"
+definitions:
+  NewPayment:
+    type: "object"
+    properties:
+      account:
+        type: "string"
+        description: "Account to receive on"
+      amount:
+        type: "string"
+        description: "Amount to receive in NANO"
+  NewPaymentResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Payment ID"
+      account:
+        type: "string"
+        description: "The intermediate account the payer must pay to. After the amount is received it will be forwarded to the payee's account."
+  WaitPayment:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Payment ID"
+      timeout:
+        type: "integer"
+        description: "Duration in seconds to wait for"
+        default: 1800
+  StatusPayment:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Payment ID"
+  StatusResponse:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+        description: "Payment ID"
+      block_hash:
+        type: "string"
+        description: "If payment was fulfilled this will report the block hash of the forwarding payment"
