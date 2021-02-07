@@ -28,22 +28,28 @@ export default function Payment() {
   const [blockHash, setBlockHash] = useState("");
   const [error, setError] = useState();
 
+  const waitForPayment = id =>
+    postData('/payment/wait', {id}).then(data => {
+      setShow(false);
+      setBlockHash(data['block_hash']);
+    }).catch(err => {
+      if (err.name != 'AbortError') {
+        return new Promise(resolve =>
+          setTimeout(resolve, 3000)
+        ).then(() => waitForPayment(id));
+      }
+    });
+
   const handleSubmit = e => {
     e.preventDefault();
     controller = new AbortController();
-    postData('/payment/new', {account, amount})
-    .then(data => {
+    postData('/payment/new', {account, amount}).then(data => {
       setAccount2(data.account);
       setShow(true);
       setBlockHash("");
       setError();
-      return postData('/payment/wait', {id: data.id});
-    }).then(data => {
-      setShow(false);
-      setBlockHash(data['block_hash']);
-    }).catch(err => {
-      if (err.name != 'AbortError') setError(err);
-    });
+      return waitForPayment(data.id);
+    }).catch(setError);
   }
 
   const handleClose = () => {
