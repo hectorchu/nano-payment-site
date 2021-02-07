@@ -35,6 +35,8 @@ function App() {
     .then(data => {
       setAccount2(data.account);
       setShow(true);
+      setBlockHash("");
+      setError();
       return postData('https://gonano.dev/payment/wait', {id: data.id, timeout: "1800"});
     })
     .then(data => {
