@@ -83,13 +83,24 @@ export default function Payment() {
         <Form.Group as={Form.Row}>
           <Form.Label column sm="2">Account to receive on</Form.Label>
           <Col sm="7">
-            <Form.Control type="text" placeholder="Account" value={account} onChange={e => setAccount(e.target.value)} />
+            <Form.Control
+              type="text"
+              placeholder="Account"
+              value={account}
+              onChange={e => setAccount(e.target.value)}
+            />
           </Col>
         </Form.Group>
         <Form.Group as={Form.Row}>
           <Form.Label column sm="2">Amount to receive</Form.Label>
           <Col sm="7">
-            <Form.Control type="number" placeholder="Amount" value={amount} onChange={e => setAmount(e.target.value)} />
+            <Form.Control
+              type="number"
+              lang="en"
+              placeholder="Amount"
+              value={amount}
+              onChange={e => setAmount(e.target.value)}
+            />
           </Col>
           <Form.Label column sm="2">NANO</Form.Label>
         </Form.Group>

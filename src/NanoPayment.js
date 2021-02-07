@@ -4,6 +4,7 @@ import QRCode from 'qrcode.react';
 import Big from 'big.js';
 
 export default function NanoPayment({account, amount, show, onClose}) {
+  const link = `nano:${account}?amount=${Big(amount||0).times(1e30).toFixed(0)}`;
   return (
     <Modal centered show={show} onHide={onClose}>
       <Modal.Header closeButton>
@@ -12,8 +13,9 @@ export default function NanoPayment({account, amount, show, onClose}) {
 
       <Modal.Body>
         <p>Please send {amount} NANO to <pre>{account}</pre></p>
+        <a href={link}>Payment Link</a>
         <div style={{textAlign: 'center'}}>
-          <QRCode value={`nano:${account}?amount=${Big(amount||0).times(1e30).toFixed(0)}`} />
+          <QRCode value={link} />
         </div>
       </Modal.Body>
 
