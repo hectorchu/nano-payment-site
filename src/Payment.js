@@ -103,6 +103,8 @@ export default function Payment() {
             <Form.Control
               type="number"
               lang="en"
+              min="0"
+              step="0.000001"
               placeholder="Amount"
               value={amount}
               onChange={e => setAmount(e.target.value)}
