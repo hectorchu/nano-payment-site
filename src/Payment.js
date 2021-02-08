@@ -59,19 +59,6 @@ export default function Payment() {
 
   return (
     <div>
-      {blockHash &&
-        <Alert variant="success" onClose={() => setBlockHash("")} dismissible>
-          Received with block hash{' '}
-          <Alert.Link target="_blank" href={"https://nanolooker.com/block/"+blockHash}>{blockHash}</Alert.Link>
-        </Alert>
-      }
-
-      {error &&
-        <Alert variant="danger" onClose={() => setError()} dismissible>
-          Error: {error.message}
-        </Alert>
-      }
-
       <p>
         Gonano Payments is an easy-to-use payment processor for NANO that is free to use by the community.
       </p>
@@ -84,6 +71,21 @@ export default function Payment() {
       <p>
         Try out a small demo below, simply input the address you'd like to receive payment on and the amount.
       </p>
+
+      {blockHash && !error &&
+        <Alert variant="success" onClose={() => setBlockHash("")} dismissible>
+          Received with block hash{' '}
+          <Alert.Link target="_blank" href={"https://nanolooker.com/block/"+blockHash}>
+            {blockHash.slice(0,8)+'…'+blockHash.slice(-8)}
+          </Alert.Link>
+        </Alert>
+      }
+
+      {error &&
+        <Alert variant="danger" onClose={() => setError()} dismissible>
+          Error: {error.message}
+        </Alert>
+      }
 
       <Form onSubmit={handleSubmit}>
         <Form.Group as={Form.Row}>
