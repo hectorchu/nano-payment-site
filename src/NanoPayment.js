@@ -6,7 +6,7 @@ import Big from 'big.js';
 export default function NanoPayment({account, amount, show, onClose}) {
   const link = `nano:${account}?amount=${Big(amount||0).times(1e30).toFixed(0)}`;
   return (
-    <Modal centered show={show} onHide={onClose}>
+    <Modal centered show={show} onHide={onClose} backdrop="static">
       <Modal.Header closeButton>
         <Modal.Title>NANO Payment Request</Modal.Title>
       </Modal.Header>
