@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Alert, Button, Col, Form} from 'react-bootstrap';
-import NanoPaymentModal from './NanoPaymentModal';
+import {NanoPaymentModal} from 'react-nano-payment';
 
 export default function Payment() {
   const [account, setAccount] = useState('');
