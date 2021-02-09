@@ -1,65 +1,27 @@
 import React, {useState} from 'react';
 import {Alert, Button, Col, Form} from 'react-bootstrap';
-import NanoPayment from './NanoPayment';
-
-let controller = new AbortController();
-
-function postData(url, data) {
-  return fetch(url, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(data),
-    signal: controller.signal,
-  }).then(resp => {
-    if (resp.status != 200) {
-      return resp.text().then(data => {
-        throw new Error(data);
-      });
-    }
-    return resp.json();
-  });
-}
+import NanoPaymentModal from './NanoPaymentModal';
 
 export default function Payment() {
-  const [id, setID] = useState("");
-  const [account, setAccount] = useState("");
-  const [account2, setAccount2] = useState("");
-  const [amount, setAmount] = useState("");
+  const [account, setAccount] = useState('');
+  const [amount, setAmount] = useState('');
   const [show, setShow] = useState(false);
-  const [blockHash, setBlockHash] = useState("");
+  const [blockHash, setBlockHash] = useState('');
   const [error, setError] = useState();
-
-  const waitForPayment = id =>
-    postData('/payment/wait', {id}).then(data => {
-      setShow(false);
-      setBlockHash(data['block_hash']);
-    }).catch(err => {
-      if (err.name != 'AbortError') {
-        return new Promise(resolve =>
-          setTimeout(resolve, 3000)
-        ).then(() => waitForPayment(id));
-      }
-    });
 
   const handleSubmit = e => {
     e.preventDefault();
-    controller = new AbortController();
-    postData('/payment/new', {account, amount}).then(data => {
-      setID(data.id);
-      setAccount2(data.account);
-      setShow(true);
-      setBlockHash("");
-      setError();
-      return waitForPayment(data.id);
-    }).catch(setError);
+    setShow(true);
+    setBlockHash('');
+    setError();
   }
-
-  const handleClose = () => {
-    controller.abort();
-    controller = new AbortController();
-    postData('/payment/cancel', {id})
-    .catch(setError)
-    .then(() => setShow(false));
+  const handleSuccess = res => {
+    setShow(false);
+    setBlockHash(res.block_hash);
+  }
+  const handleError = err => {
+    setShow(false);
+    setError(err);
   }
 
   return (
@@ -78,9 +40,9 @@ export default function Payment() {
       </p>
 
       {blockHash && !error &&
-        <Alert variant="success" onClose={() => setBlockHash("")} dismissible>
+        <Alert variant="success" onClose={() => setBlockHash('')} dismissible>
           Received with block hash{' '}
-          <Alert.Link target="_blank" href={"https://nanolooker.com/block/"+blockHash}>
+          <Alert.Link target="_blank" href={'https://nanolooker.com/block/'+blockHash}>
             {blockHash.slice(0,8)+'…'+blockHash.slice(-8)}
           </Alert.Link>
         </Alert>
@@ -122,7 +84,14 @@ export default function Payment() {
         <Button variant="primary" type="submit" disabled={!account || amount <= 0}>Submit payment request</Button>
       </Form>
 
-      <NanoPayment account={account2} amount={amount} show={show} onClose={handleClose} />
+      <NanoPaymentModal
+        account={account}
+        amount={amount}
+        show={show}
+        onClose={() => setShow(false)}
+        onSuccess={handleSuccess}
+        onError={handleError}
+      />
     </div>
   );
 }
