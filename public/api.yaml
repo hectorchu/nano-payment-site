@@ -15,7 +15,7 @@ paths:
     post:
       tags:
       - "payment"
-      summary: "Create a new payment request"
+      summary: "Create a new payment"
       consumes:
       - "application/json"
       produces:
@@ -59,6 +59,29 @@ paths:
           description: "Invalid input"
         "500":
           description: "Internal server error"
+  /cancel:
+    post:
+      tags:
+      - "payment"
+      summary: "Cancel a payment"
+      description: "Any funds received are refunded."
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          $ref: "#/definitions/PaymentID"
+      responses:
+        "200":
+          description: "Successful operation"
+        "400":
+          description: "Invalid input"
+        "500":
+          description: "Internal server error"
   /status:
     post:
       tags:
@@ -73,7 +96,7 @@ paths:
         name: "body"
         required: true
         schema:
-          $ref: "#/definitions/StatusPayment"
+          $ref: "#/definitions/PaymentID"
       responses:
         "200":
           description: "Successful operation"
@@ -112,7 +135,7 @@ definitions:
         type: "integer"
         description: "Duration in seconds to wait for"
         default: 1800
-  StatusPayment:
+  PaymentID:
     type: "object"
     properties:
       id:

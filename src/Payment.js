@@ -21,6 +21,7 @@ function postData(url, data) {
 }
 
 export default function Payment() {
+  const [id, setID] = useState("");
   const [account, setAccount] = useState("");
   const [account2, setAccount2] = useState("");
   const [amount, setAmount] = useState("");
@@ -44,6 +45,7 @@ export default function Payment() {
     e.preventDefault();
     controller = new AbortController();
     postData('/payment/new', {account, amount}).then(data => {
+      setID(data.id);
       setAccount2(data.account);
       setShow(true);
       setBlockHash("");
@@ -53,8 +55,11 @@ export default function Payment() {
   }
 
   const handleClose = () => {
-    setShow(false);
     controller.abort();
+    controller = new AbortController();
+    postData('/payment/cancel', {id})
+    .catch(setError)
+    .then(() => setShow(false));
   }
 
   return (
