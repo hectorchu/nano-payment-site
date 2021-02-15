@@ -8,13 +8,18 @@ function Spacer() {
 }
 
 export default function App() {
+  const handleSelect = key => {
+    if (key == 'woo') {
+      window.location = 'https://github.com/hectorchu/woocommerce-gateway-gonano';
+    }
+  }
   return (
     <Container>
       <Spacer />
       <h1>Gonano Payments</h1>
       <Spacer />
 
-      <Tabs defaultActiveKey="demo">
+      <Tabs defaultActiveKey="demo" onSelect={handleSelect}>
         <Tab eventKey="demo" title="Demo">
           <Spacer />
           <Payment />
@@ -23,6 +28,7 @@ export default function App() {
         <Tab eventKey="api" title="API">
           <Api />
         </Tab>
+        <Tab eventKey="woo" title="WooCommerce" />
       </Tabs>
     </Container>
   );

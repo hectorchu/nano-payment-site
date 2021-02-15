@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Alert, Button, Col, Form} from 'react-bootstrap';
+import {Alert, Button, Col, Form, InputGroup} from 'react-bootstrap';
 import {NanoPaymentModal} from 'react-nano-payment';
 
 export default function Payment() {
@@ -69,17 +69,21 @@ export default function Payment() {
         <Form.Group as={Form.Row}>
           <Form.Label column sm="2">Amount to receive</Form.Label>
           <Col sm="7">
-            <Form.Control
-              type="number"
-              lang="en"
-              min="0"
-              step="0.000001"
-              placeholder="Amount"
-              value={amount}
-              onChange={e => setAmount(e.target.value)}
-            />
+            <InputGroup>
+              <Form.Control
+                type="number"
+                lang="en"
+                min="0"
+                step="0.000001"
+                placeholder="Amount"
+                value={amount}
+                onChange={e => setAmount(e.target.value)}
+              />
+              <InputGroup.Append>
+                <InputGroup.Text>NANO</InputGroup.Text>
+              </InputGroup.Append>
+            </InputGroup>
           </Col>
-          <Form.Label column sm="2">NANO</Form.Label>
         </Form.Group>
         <Button variant="primary" type="submit" disabled={!account || amount <= 0}>Submit payment request</Button>
       </Form>
