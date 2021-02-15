@@ -55,7 +55,7 @@ export default function Payment() {
       }
 
       <Form onSubmit={handleSubmit}>
-        <Form.Group as={Form.Row}>
+        <Form.Group as={Form.Row} className="align-items-center">
           <Form.Label column sm="2">Account to receive on</Form.Label>
           <Col sm="7">
             <Form.Control
@@ -66,7 +66,7 @@ export default function Payment() {
             />
           </Col>
         </Form.Group>
-        <Form.Group as={Form.Row}>
+        <Form.Group as={Form.Row} className="align-items-center">
           <Form.Label column sm="2">Amount to receive</Form.Label>
           <Col sm="7">
             <InputGroup>
