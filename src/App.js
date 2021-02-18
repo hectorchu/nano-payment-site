@@ -10,7 +10,7 @@ function Spacer() {
 export default function App() {
   const handleSelect = key => {
     if (key == 'woo') {
-      window.location = 'https://github.com/hectorchu/woocommerce-gateway-gonano';
+      window.location = 'https://wordpress.org/plugins/wc-gateway-gonano';
     }
   }
   return (
