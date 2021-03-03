@@ -40,6 +40,7 @@ paths:
       tags:
       - "payment"
       summary: "Wait for a payment to be fulfilled"
+      description: "Call this to process any received funds."
       consumes:
       - "application/json"
       produces:
